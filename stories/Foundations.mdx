@@ -1,0 +1,38 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+import {
+  ColorSwatches,
+  TypographyScale,
+  SpacingScale,
+  RoundedScale,
+} from "./_components/tokens";
+
+<Meta title="Foundations/Design Tokens" parameters={{ layout: "fullscreen" }} />
+
+# Run Smart 디자인 토큰
+
+`DESIGN.md`의 색·타이포·간격 토큰입니다. 우측 상단의 테마 전환으로 라이트/다크 값을 확인할 수 있습니다.
+색은 `theme.css`의 `--ds-*` 변수를 그대로 렌더링하며, 아래 값은 라이트 기준입니다.
+
+## Colors
+
+색 이름은 색상이 아니라 **역할**로 정합니다. 같은 이름이 라이트/다크에서 다른 값을 가집니다.
+
+<ColorSwatches />
+
+## Typography
+
+본문·제목은 **Figtree**, 한글은 **Pretendard Variable** fallback, 숫자는 **Geist Mono**를 사용합니다.
+
+<TypographyScale />
+
+## Spacing
+
+기본 간격은 4px 단위입니다.
+
+<SpacingScale />
+
+## Rounded
+
+`--radius`(10px)에 배수를 곱해 만듭니다. 버튼·카드·다이얼로그는 `4xl`, 입력창·배지는 `3xl`입니다.
+
+<RoundedScale />
