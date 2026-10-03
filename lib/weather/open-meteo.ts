@@ -1,4 +1,8 @@
-import { DAILY_FORECAST_DAYS, HOURLY_POINT_COUNT } from "@/lib/constants";
+import {
+  DAILY_FORECAST_DAYS,
+  HOURLY_POINT_COUNT,
+  PAST_HOURS,
+} from "@/lib/constants";
 import { logger } from "@/lib/logger";
 import type {
   HourlyPoint,
@@ -58,32 +62,64 @@ function indexByTime(times: string[]): Map<string, number> {
   return new Map(times.map((time, index) => [time, index]));
 }
 
-/** Forecast와 Air Quality 응답을 시각 기준으로 합쳐 시간별 값으로 변환한다. */
+/** 인덱스 직전 PAST_HOURS개 시각의 강수량 합(mm). 앞쪽 데이터가 없으면 있는 만큼만 더한다. */
+function sumPreviousPrecipitation(
+  values: (number | null)[],
+  index: number,
+): number {
+  const from = Math.max(0, index - PAST_HOURS);
+  return values.slice(from, index).reduce<number>((sum, v) => sum + (v ?? 0), 0);
+}
+
+/** 대기질 값을 시각 인덱스로 찾는다. 해당 시각이 없거나 값이 null이면 null이다. */
+function airValue(
+  values: (number | null)[],
+  airIndex: number | undefined,
+): number | null {
+  return airIndex === undefined ? null : (values[airIndex] ?? null);
+}
+
+/** i번째 시각의 시간별 값 한 개를 만든다. */
+function toHourlyPoint(
+  forecast: OpenMeteoForecast,
+  airQuality: OpenMeteoAirQuality,
+  airIndexByTime: Map<string, number>,
+  i: number,
+): HourlyPoint {
+  const { hourly } = forecast;
+  const time = hourly.time[i];
+  const a = airIndexByTime.get(time);
+  return {
+    time,
+    temperatureC: requireNumber(hourly.temperature_2m[i], "temperature_2m"),
+    apparentTemperatureC: requireNumber(
+      hourly.apparent_temperature[i],
+      "apparent_temperature",
+    ),
+    precipitationProbability: numberOr(hourly.precipitation_probability[i], 0),
+    precipitationMm: numberOr(hourly.precipitation[i], 0),
+    precipitationPrev3hMm: sumPreviousPrecipitation(hourly.precipitation, i),
+    windSpeedMs: requireNumber(hourly.wind_speed_10m[i], "wind_speed_10m"),
+    uvIndex: airValue(airQuality.hourly.uv_index, a),
+    pm25: airValue(airQuality.hourly.pm2_5, a),
+    pm10: airValue(airQuality.hourly.pm10, a),
+    isDaytime: hourly.is_day[i] === 1,
+  };
+}
+
+/**
+ * Forecast와 Air Quality 응답을 시각 기준으로 합쳐 시간별 값으로 변환한다.
+ * 응답 앞쪽의 과거 시간(past_hours)은 직전 강수 합산에만 쓰고, 결과는 현재 시각부터 시작한다.
+ */
 function toHourlyPoints(
   forecast: OpenMeteoForecast,
   airQuality: OpenMeteoAirQuality,
 ): HourlyPoint[] {
-  const { hourly } = forecast;
   const airIndex = indexByTime(airQuality.hourly.time);
-  return hourly.time.slice(0, HOURLY_POINT_COUNT).map((time, i) => {
-    const a = airIndex.get(time);
-    const air = airQuality.hourly;
-    return {
-      time,
-      temperatureC: requireNumber(hourly.temperature_2m[i], "temperature_2m"),
-      apparentTemperatureC: requireNumber(
-        hourly.apparent_temperature[i],
-        "apparent_temperature",
-      ),
-      precipitationProbability: numberOr(hourly.precipitation_probability[i], 0),
-      precipitationMm: numberOr(hourly.precipitation[i], 0),
-      windSpeedMs: requireNumber(hourly.wind_speed_10m[i], "wind_speed_10m"),
-      uvIndex: a === undefined ? null : (air.uv_index[a] ?? null),
-      pm25: a === undefined ? null : (air.pm2_5[a] ?? null),
-      pm10: a === undefined ? null : (air.pm10[a] ?? null),
-      isDaytime: hourly.is_day[i] === 1,
-    };
-  });
+  const start = Math.max(0, forecast.hourly.time.length - HOURLY_POINT_COUNT);
+  return forecast.hourly.time
+    .slice(start)
+    .map((_, offset) => toHourlyPoint(forecast, airQuality, airIndex, start + offset));
 }
 
 /**
@@ -118,6 +154,7 @@ export function buildForecastUrl({ latitude, longitude }: WeatherQuery): string 
     daily: "temperature_2m_max,temperature_2m_min,sunrise,sunset",
     wind_speed_unit: "ms",
     timezone: "auto",
+    past_hours: String(PAST_HOURS),
     forecast_hours: String(HOURLY_POINT_COUNT),
     forecast_days: String(DAILY_FORECAST_DAYS),
   });

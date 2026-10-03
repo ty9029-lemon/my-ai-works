@@ -17,6 +17,9 @@ export const FORECAST_HOURS = 12;
 /** 현재 시각 1개 + 이후 FORECAST_HOURS개의 시간별 값 */
 export const HOURLY_POINT_COUNT = FORECAST_HOURS + 1;
 
+/** 직전 강수(빙판 판정)를 계산하려고 추가로 가져오는 과거 시간 수 */
+export const PAST_HOURS = 3;
+
 /** 날씨 공급자에서 가져오는 일별 예보 일수 (오늘 + 내일 일출 확인용) */
 export const DAILY_FORECAST_DAYS = 2;
 

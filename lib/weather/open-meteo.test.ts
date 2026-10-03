@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { HOURLY_POINT_COUNT } from "@/lib/constants";
+import { HOURLY_POINT_COUNT, PAST_HOURS } from "@/lib/constants";
 import {
   buildAirQualityUrl,
   buildForecastUrl,
@@ -105,6 +105,24 @@ describe("normalizeOpenMeteo", () => {
     expect(result.hourly[0].precipitationProbability).toBe(0);
   });
 
+  it("과거 시간이 포함되면 결과는 현재 시각부터 시작하고 직전 3시간 강수를 합산한다", () => {
+    const count = PAST_HOURS + HOURLY_POINT_COUNT;
+    const forecast = makeForecast(count);
+    forecast.hourly.precipitation = forecast.hourly.precipitation.map((_, i) =>
+      i < PAST_HOURS ? i + 1 : 0,
+    );
+    const result = normalizeOpenMeteo(forecast, makeAirQuality(count), "now");
+    expect(result.hourly).toHaveLength(HOURLY_POINT_COUNT);
+    expect(result.hourly[0].time).toBe(forecast.hourly.time[PAST_HOURS]);
+    expect(result.hourly[0].precipitationPrev3hMm).toBe(1 + 2 + 3);
+    expect(result.hourly[1].precipitationPrev3hMm).toBe(2 + 3);
+  });
+
+  it("과거 시간이 없으면 직전 강수는 0이다", () => {
+    const result = normalizeOpenMeteo(makeForecast(), makeAirQuality(), "now");
+    expect(result.hourly[0].precipitationPrev3hMm).toBe(0);
+  });
+
   it("체감온도가 없으면 예외를 던진다", () => {
     const forecast = makeForecast();
     forecast.hourly.apparent_temperature[0] = null;
@@ -121,6 +139,12 @@ describe("요청 URL", () => {
     expect(url.searchParams.get("timezone")).toBe("auto");
     expect(url.searchParams.get("latitude")).toBe("37.57");
     expect(url.searchParams.get("hourly")).toContain("apparent_temperature");
+  });
+
+  it("직전 강수 계산을 위해 과거 3시간을 함께 요청한다", () => {
+    const url = new URL(buildForecastUrl(QUERY));
+    expect(url.searchParams.get("past_hours")).toBe(String(PAST_HOURS));
+    expect(url.searchParams.get("forecast_hours")).toBe(String(HOURLY_POINT_COUNT));
   });
 
   it("대기질 요청에 PM2.5·PM10·UV를 포함한다", () => {

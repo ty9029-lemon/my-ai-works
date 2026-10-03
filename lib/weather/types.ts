@@ -8,6 +8,8 @@ export interface HourlyPoint {
   precipitationProbability: number;
   /** 강수량(mm) */
   precipitationMm: number;
+  /** 해당 시각 직전 3시간의 강수량 합(mm). 빙판 판정에 쓴다. */
+  precipitationPrev3hMm: number;
   windSpeedMs: number;
   /** UV 지수 (모델 추정치). 값이 없으면 null */
   uvIndex: number | null;
