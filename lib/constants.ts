@@ -14,5 +14,11 @@ export const DEFAULT_LOCATION = {
 /** 출발 시각 선택과 미니 예보가 다루는 시간 범위(시간) */
 export const FORECAST_HOURS = 12;
 
+/** 현재 시각 1개 + 이후 FORECAST_HOURS개의 시간별 값 */
+export const HOURLY_POINT_COUNT = FORECAST_HOURS + 1;
+
+/** 날씨 공급자에서 가져오는 일별 예보 일수 (오늘 + 내일 일출 확인용) */
+export const DAILY_FORECAST_DAYS = 2;
+
 /** 민감도·강도 보정 합계의 상한(℃). 안전장치 용도의 초안 값이다. */
 export const MAX_ADJUSTMENT_C = 7;

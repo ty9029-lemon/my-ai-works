@@ -24,7 +24,7 @@
 - [x] 도메인 타입 정의(`lib/*/types.ts`): `NormalizedWeather`, `HourlyPoint`, `WeatherProvider`, `UserProfile`, `SavedLocation`, `OutfitRecommendation`, `SafetyResult` (PRD 8번 필드 기준)
 
 ## 1단계: 데이터 (F001, F002, F003)
-- [ ] **F002** Open-Meteo 변수명·`wind_speed_unit` 공식 문서 재확인 후 Forecast·Air Quality 어댑터 작성, m/s 변환 테스트
+- [x] **F002** Open-Meteo 변수명·`wind_speed_unit` 공식 문서 재확인 후 Forecast·Air Quality 어댑터 작성, m/s 변환 테스트
 - [ ] **F002** 조회 실패 시 직전 데이터 + "N분 전 데이터", 직전 데이터도 없으면 "다시 시도" 상태 처리
 - [ ] **F001** Geolocation 훅: 버튼 클릭 시에만 요청, 에러 코드 1·2·3별 문구, Permissions API 미사용
 - [ ] **F001** 위치 대체 순서(마지막 저장 위치 → 주소 검색 → 서울시청), 반올림 좌표 저장, 구·동 단위 표시 규칙

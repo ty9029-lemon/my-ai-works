@@ -9,11 +9,12 @@ export interface HourlyPoint {
   /** 강수량(mm) */
   precipitationMm: number;
   windSpeedMs: number;
-  uvIndex: number;
-  /** PM2.5(㎍/㎥, 모델 추정치) */
-  pm25: number;
-  /** PM10(㎍/㎥, 모델 추정치) */
-  pm10: number;
+  /** UV 지수 (모델 추정치). 값이 없으면 null */
+  uvIndex: number | null;
+  /** PM2.5(㎍/㎥, 모델 추정치). 값이 없으면 null */
+  pm25: number | null;
+  /** PM10(㎍/㎥, 모델 추정치). 값이 없으면 null */
+  pm10: number | null;
   isDaytime: boolean;
 }
 
@@ -31,6 +32,8 @@ export interface NormalizedWeather {
   sunrise: string;
   /** 오늘 일몰 시각 (ISO 8601) */
   sunset: string;
+  /** 다음 날 일출 시각 (ISO 8601). 12시간 안에 자정을 넘길 때 야간 판정에 쓴다. */
+  nextSunrise: string;
 }
 
 /** 날씨 조회에 쓰는 좌표 */
