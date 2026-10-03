@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "test": "vitest run",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
@@ -16,6 +17,7 @@
     "cn": "^0.4.0",
     "lucide-react": "^1.49.0",
     "next": "16.3.8",
+    "pino": "^10.4.0",
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "recharts": "^3.8.0",
@@ -28,7 +30,7 @@
     "@storybook/addon-themes": "^10.6.1",
     "@storybook/nextjs-vite": "^10.6.1",
     "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
+    "@types/node": "^24.19.1",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "babel-plugin-react-compiler": "1.0.0",
@@ -39,6 +41,7 @@
     "storybook": "^10.6.1",
     "tailwindcss": "^4",
     "typescript": "^5",
-    "vite": "latest"
+    "vite": "latest",
+    "vitest": "^5.0.3"
   }
 }
