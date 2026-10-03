@@ -64,13 +64,8 @@ describe("toGeolocationFailure", () => {
 
 describe("requestCurrentPosition", () => {
   it("정확도 옵션을 끄고 타임아웃 상수를 적용해 요청한다", async () => {
-    const getCurrentPosition = vi.fn(
-      (
-        success: PositionCallback,
-        _error?: PositionErrorCallback | null,
-        _options?: PositionOptions,
-      ) =>
-        success({ coords: { latitude: 37.5, longitude: 127 } } as GeolocationPosition),
+    const getCurrentPosition = vi.fn<Geolocation["getCurrentPosition"]>((success) =>
+      success({ coords: { latitude: 37.5, longitude: 127 } } as GeolocationPosition),
     );
     const geolocation = { getCurrentPosition } as unknown as Geolocation;
     const position = await requestCurrentPosition(geolocation);

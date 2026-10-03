@@ -1,14 +1,18 @@
-/** 체감 민감도 */
-export type Sensitivity = "cold" | "normal" | "hot";
+/** 체감 민감도 허용 값: 추위 많이 탐 / 보통 / 더위 많이 탐 */
+export const SENSITIVITIES = ["cold", "normal", "hot"] as const;
+export type Sensitivity = (typeof SENSITIVITIES)[number];
 
-/** 운동 강도 */
-export type Intensity = "jog" | "long" | "interval";
+/** 운동 강도 허용 값: 조깅 / 장거리 / 인터벌·템포 */
+export const INTENSITIES = ["jog", "long", "interval"] as const;
+export type Intensity = (typeof INTENSITIES)[number];
 
-/** 추천 모드 */
-export type Mode = "run" | "outing";
+/** 추천 모드 허용 값: 러닝 / 외출 */
+export const MODES = ["run", "outing"] as const;
+export type Mode = (typeof MODES)[number];
 
-/** 위치를 얻은 방법 */
-export type LocationSource = "gps" | "search" | "default";
+/** 위치를 얻은 방법 허용 값 */
+export const LOCATION_SOURCES = ["gps", "search", "default"] as const;
+export type LocationSource = (typeof LOCATION_SOURCES)[number];
 
 /** 사용자 프로필 (localStorage 저장) */
 export interface UserProfile {
