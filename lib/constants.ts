@@ -20,5 +20,8 @@ export const HOURLY_POINT_COUNT = FORECAST_HOURS + 1;
 /** 날씨 공급자에서 가져오는 일별 예보 일수 (오늘 + 내일 일출 확인용) */
 export const DAILY_FORECAST_DAYS = 2;
 
+/** 1분(ms). "N분 전 데이터" 계산에 쓴다. */
+export const MS_PER_MINUTE = 60_000;
+
 /** 민감도·강도 보정 합계의 상한(℃). 안전장치 용도의 초안 값이다. */
 export const MAX_ADJUSTMENT_C = 7;
