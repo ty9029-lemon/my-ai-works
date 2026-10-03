@@ -17,11 +17,11 @@
 - 없음: 도메인 코드(`lib/weather`, `lib/outfit`, `lib/safety`), 서비스 화면, 테스트 실행 환경(`package.json`에 test 스크립트 없음)
 
 ## 0단계: 기반
-- [ ] Next.js 가이드 확인: 라우팅, 서버·클라이언트 컴포넌트, 외부 API 호출 방식, 환경변수 (`node_modules/next/dist/docs/`)
-- [ ] 테스트 환경 구성: 러너를 선택하고 `npm run test` 스크립트 추가 (버전은 공식 출처로 확인)
-- [ ] 로깅: `console.log` 대신 쓸 로깅 라이브러리 선택·적용
-- [ ] 상수 파일 작성: 위치 타임아웃(`GEOLOCATION_TIMEOUT_MS`), 좌표 반올림 자릿수, 기본 위치(서울시청), 출발 시각 범위(12시간)
-- [ ] 도메인 타입 정의: `NormalizedWeather`, `HourlyPoint`, `WeatherProvider`, `UserProfile`, `SavedLocation`, `OutfitRecommendation`, `SafetyResult` (PRD 8번 필드 기준)
+- [x] Next.js 가이드 확인: 라우팅, 서버·클라이언트 컴포넌트, 외부 API 호출 방식, 환경변수 (`node_modules/next/dist/docs/`)
+- [x] 테스트 환경 구성: Vitest 5.0.3, `npm run test` 추가 (`@types/node`를 24로 올림, jsdom은 3단계에서 추가)
+- [x] 로깅: pino 10.4.0, `lib/logger.ts`
+- [x] 상수 파일 작성(`lib/constants.ts`): 위치 타임아웃(`GEOLOCATION_TIMEOUT_MS`), 좌표 반올림 자릿수, 기본 위치(서울시청), 출발 시각 범위(12시간)
+- [x] 도메인 타입 정의(`lib/*/types.ts`): `NormalizedWeather`, `HourlyPoint`, `WeatherProvider`, `UserProfile`, `SavedLocation`, `OutfitRecommendation`, `SafetyResult` (PRD 8번 필드 기준)
 
 ## 1단계: 데이터 (F001, F002, F003)
 - [ ] **F002** Open-Meteo 변수명·`wind_speed_unit` 공식 문서 재확인 후 Forecast·Air Quality 어댑터 작성, m/s 변환 테스트

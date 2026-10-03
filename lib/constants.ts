@@ -1,0 +1,18 @@
+/** 위치 권한 요청 타임아웃(ms). 초안 값이며 출시 전 검증이 필요하다. */
+export const GEOLOCATION_TIMEOUT_MS = 10_000;
+
+/** 서버 요청·저장에 쓰는 좌표 반올림 자릿수 (약 1.1km 정밀도) */
+export const COORDINATE_DECIMAL_PLACES = 2;
+
+/** 기본 위치(서울시청). 위치 확인에 모두 실패했을 때 사용한다. */
+export const DEFAULT_LOCATION = {
+  regionName: "서울",
+  latitude: 37.5663,
+  longitude: 126.9779,
+} as const;
+
+/** 출발 시각 선택과 미니 예보가 다루는 시간 범위(시간) */
+export const FORECAST_HOURS = 12;
+
+/** 민감도·강도 보정 합계의 상한(℃). 안전장치 용도의 초안 값이다. */
+export const MAX_ADJUSTMENT_C = 7;
