@@ -28,7 +28,7 @@
 - [x] **F002** 조회 실패 시 직전 데이터 + "N분 전 데이터", 직전 데이터도 없으면 "다시 시도" 상태 처리
 - [x] **F001** Geolocation 로직(훅은 3단계 화면 연결 시): 버튼 클릭 시에만 요청, 에러 코드 1·2·3별 문구, Permissions API 미사용
 - [x] **F001** 위치 대체 순서(마지막 저장 위치 → 주소 검색 → 서울시청), 반올림 좌표 저장, 구·동 단위 표시 규칙
-- [ ] **F001** 주소 검색: Kakao 로컬 → 0건·한국 밖은 Open-Meteo Geocoding. Kakao 결과 저장 허용 여부 약관 확인(PRD 미결 질문)
+- [x] **F001** 주소 검색: Kakao 로컬 → 0건·한국 밖은 Open-Meteo Geocoding (`/api/geocode`, `/api/reverse-geocode`). **Kakao 키 경로는 목 테스트만 통과, 실제 키로는 미검증.** 키 없이는 한국어 지명 검색 품질이 낮음("서울"·"마포구" 0건). Kakao 결과는 캐시·저장하지 않으며 약관 확인은 남음(PRD 미결 질문)
 - [ ] **F003** `localStorage` 기반 프로필·위치 저장 훅(`UserProfile`, `SavedLocation`), 초기화 기능
 
 ## 2단계: 규칙 (F004, F005)

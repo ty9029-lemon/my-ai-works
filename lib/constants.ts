@@ -20,6 +20,9 @@ export const HOURLY_POINT_COUNT = FORECAST_HOURS + 1;
 /** 날씨 공급자에서 가져오는 일별 예보 일수 (오늘 + 내일 일출 확인용) */
 export const DAILY_FORECAST_DAYS = 2;
 
+/** 주소 검색어 최대 길이 */
+export const MAX_SEARCH_QUERY_LENGTH = 100;
+
 /** 1분(ms). "N분 전 데이터" 계산에 쓴다. */
 export const MS_PER_MINUTE = 60_000;
 
