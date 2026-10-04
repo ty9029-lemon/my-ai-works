@@ -242,6 +242,8 @@ components:
 - **Input + Label:** 항상 `Label htmlFor`와 `Input id`를 짝지어 쓴다. 오류는 `aria-invalid`로 표시하면 danger 테두리/링이 자동 적용된다.
 - **Card:** `size="sm" | "default"`. 정보 덩어리 단위이며 그림자 없이 1px `border` 테두리로 구분한다. `CardAction`에 배지나 보조 버튼을 둔다.
 - **Dialog:** 트리거와 닫기 버튼은 `asChild`가 아니라 `render` prop을 쓴다. 예: `<DialogTrigger render={<Button variant="outline" />}>`.
+- **Toggle Group:** 하나를 고르는 칩 묶음(모드, 운동 강도, 체감 민감도, 출발 시각). `variant="outline"`을 쓰고 선택된 칩은 `foreground` 테두리 + `secondary` 면으로 구분한다(primary는 CTA에만 쓰므로 칩에 쓰지 않는다). 터치 타깃을 위해 `size="lg"`(40px)를 쓰고, 값은 배열로 오므로 필수 선택이면 빈 배열을 무시한다.
+- **Checkbox:** 예/아니오 설정(질환 여부). 접근 가능한 이름을 위해 항상 `Label`로 감싼다.
 - **Chart:** recharts 래퍼. 색은 `ChartConfig`에서 `var(--chart-N)`으로만 지정한다.
 
 ## Do's and Don'ts
