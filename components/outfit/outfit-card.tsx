@@ -7,6 +7,8 @@ import { MODE_LABEL } from "@/lib/profile/labels";
 
 interface OutfitCardProps {
   recommendation: OutfitRecommendation;
+  /** 추천 기준 출발 시각 이름 (예: "지금", "15시"). 체감온도 옆에 "기준"과 함께 표시한다. */
+  timeLabel?: string;
   className?: string;
 }
 
@@ -25,7 +27,7 @@ function Row({ term, value }: { term: string; value: string | null }) {
  * 복장 추천 카드. 실제 체감온도와 보정 체감온도(러닝)를 함께 보여 주고,
  * 보정 내역과 상의·하의·레이어·액세서리·추가 문구를 나열한다.
  */
-export function OutfitCard({ recommendation, className }: OutfitCardProps) {
+export function OutfitCard({ recommendation, timeLabel, className }: OutfitCardProps) {
   const { mode, apparentC, adjustedApparentC, adjustments, items } = recommendation;
   const adjustment = describeAdjustments(adjustments);
   return (
@@ -33,6 +35,7 @@ export function OutfitCard({ recommendation, className }: OutfitCardProps) {
       <CardHeader>
         <CardTitle>{MODE_LABEL[mode]} 복장</CardTitle>
         <CardDescription className="font-mono tabular-nums">
+          {timeLabel && `${timeLabel} 기준 · `}
           체감 {formatTemperature(apparentC)}
           {adjustment && ` → 보정 ${formatTemperature(adjustedApparentC)}`}
         </CardDescription>

@@ -44,6 +44,9 @@ export const RunWithAdjustment: Story = {
   args: { recommendation: recommend(8, { sensitivity: "cold", intensity: "interval" }) },
 };
 
+/** 출발 시각을 고른 경우 체감온도 옆에 "15시 기준"이 붙는다 */
+export const WithTimeLabel: Story = { args: { recommendation: recommend(14), timeLabel: "15시" } };
+
 /** 외출 모드: 보정 없이 실제 체감온도로 구간을 정하고 바지·레이어 칸이 비어 있다 */
 export const Outing: Story = {
   args: {

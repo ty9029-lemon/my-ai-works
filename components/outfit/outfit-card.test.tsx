@@ -70,6 +70,18 @@ describe("OutfitCard", () => {
     expect(screen.getByText("면 소재는 피하세요")).toBeInTheDocument();
   });
 
+  it("출발 시각 이름이 있으면 체감온도 옆에 '기준'과 함께 표시한다", () => {
+    const recommendation = recommendOutfit({
+      mode: "run",
+      intensity: "jog",
+      sensitivity: "normal",
+      point: makePoint({ apparentTemperatureC: 14 }),
+      weather,
+    });
+    render(<OutfitCard recommendation={recommendation} timeLabel="15시" />);
+    expect(screen.getByText(/15시 기준 · 체감 14\.0℃/)).toBeInTheDocument();
+  });
+
   it("액세서리가 없는 구간은 액세서리 목록을 그리지 않는다", () => {
     renderCard(12);
     expect(screen.queryByRole("list", { name: "액세서리" })).not.toBeInTheDocument();
