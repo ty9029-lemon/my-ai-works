@@ -148,6 +148,15 @@ export function clearLocation(storage: KeyValueStorage): void {
 /** 저장된 키 목록을 훑을 수 있는 localStorage 호환 저장소 */
 export type ClearableStorage = KeyValueStorage & Pick<Storage, "key" | "length">;
 
+/** 브라우저 localStorage를 키 목록 조회가 가능한 형태로 돌려준다. 서버이거나 접근이 막혀 있으면 null이다. */
+export function getClearableStorage(): ClearableStorage | null {
+  try {
+    return typeof window === "undefined" ? null : window.localStorage;
+  } catch {
+    return null;
+  }
+}
+
 /** 저장소의 모든 키를 모은다. 지우는 도중 순서가 바뀌므로 먼저 복사해 둔다. */
 function listKeys(storage: ClearableStorage): string[] {
   return Array.from({ length: storage.length }, (_, i) => storage.key(i)).filter(

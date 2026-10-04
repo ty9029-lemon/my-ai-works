@@ -14,6 +14,10 @@ export const SAFETY_OK_MESSAGE = "특별한 위험 요인이 없어요.";
 export const MEDICAL_DISCLAIMER =
   "의료 조언이 아닙니다. 흉통·호흡곤란·어지럼이 있으면 즉시 운동을 중단하세요.";
 
+/** 설정 화면에 싣는 면책 문구 전문(홈 하단의 짧은 문구와 함께 보여 준다) */
+export const GENERAL_DISCLAIMER =
+  "복장 추천과 안전 등급은 예보 수치로 계산한 참고 정보이며 실제 상황과 다를 수 있어요. 기상특보와 현장 상황을 함께 확인하세요.";
+
 /** 기상특보를 자동 판정하지 않으므로 배너 아래에 항상 표시하는 안내 */
 export const LIGHTNING_NOTICE = "천둥·번개가 치면 즉시 실내로 대피하세요.";
 
