@@ -1,6 +1,6 @@
 "use client";
 
-import { ChipGroup } from "@/components/ui/chip-group";
+import { ChipGroup, type ChipOption } from "@/components/ui/chip-group";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import type { ProfileFormValue } from "@/lib/profile/form";
@@ -14,12 +14,34 @@ interface ProfileFieldsProps {
   showHealthCondition?: boolean;
 }
 
-/** 질문 제목과 칩 묶음을 한 쌍으로 그린다. */
-function Question({ title, children }: { title: string; children: React.ReactNode }) {
+interface ChipQuestionProps<T extends string> {
+  title: string;
+  options: readonly ChipOption<T>[];
+  value: T | null;
+  onChange: (value: T) => void;
+}
+
+/** 질문 제목과 칩 묶음을 한 쌍으로 그린다. 제목이 칩 묶음의 접근성 이름도 된다. */
+function ChipQuestion<T extends string>({ title, options, value, onChange }: ChipQuestionProps<T>) {
   return (
     <div className="flex flex-col gap-2">
       <p className="text-sm font-medium">{title}</p>
-      {children}
+      <ChipGroup label={title} options={options} value={value} onChange={onChange} />
+    </div>
+  );
+}
+
+/** 질환 체크와 보수 판정 안내. 설정 화면에서만 보여 준다. */
+function HealthConditionField({ checked, onChange }: { checked: boolean; onChange: (checked: boolean) => void }) {
+  return (
+    <div className="flex flex-col gap-1.5">
+      <Label className="text-sm">
+        <Checkbox checked={checked} onCheckedChange={onChange} />
+        심혈관·호흡기 질환 있음
+      </Label>
+      <p className="pl-6 text-xs text-muted-foreground">
+        체크하면 미세먼지·폭염·한파 기준을 더 보수적으로 적용해요.
+      </p>
     </div>
   );
 }
@@ -31,43 +53,29 @@ function Question({ title, children }: { title: string; children: React.ReactNod
 export function ProfileFields({ value, onChange, showHealthCondition = false }: ProfileFieldsProps) {
   return (
     <div className="flex flex-col gap-6">
-      <Question title="체감 민감도">
-        <ChipGroup
-          label="체감 민감도"
-          options={SENSITIVITY_OPTIONS}
-          value={value.sensitivity}
-          onChange={(sensitivity) => onChange({ sensitivity })}
-        />
-      </Question>
-      <Question title="기본 운동 강도">
-        <ChipGroup
-          label="기본 운동 강도"
-          options={INTENSITY_OPTIONS}
-          value={value.defaultIntensity}
-          onChange={(defaultIntensity) => onChange({ defaultIntensity })}
-        />
-      </Question>
-      <Question title="기본 모드">
-        <ChipGroup
-          label="기본 모드"
-          options={MODE_OPTIONS}
-          value={value.defaultMode}
-          onChange={(defaultMode) => onChange({ defaultMode })}
-        />
-      </Question>
+      <ChipQuestion
+        title="체감 민감도"
+        options={SENSITIVITY_OPTIONS}
+        value={value.sensitivity}
+        onChange={(sensitivity) => onChange({ sensitivity })}
+      />
+      <ChipQuestion
+        title="기본 운동 강도"
+        options={INTENSITY_OPTIONS}
+        value={value.defaultIntensity}
+        onChange={(defaultIntensity) => onChange({ defaultIntensity })}
+      />
+      <ChipQuestion
+        title="기본 모드"
+        options={MODE_OPTIONS}
+        value={value.defaultMode}
+        onChange={(defaultMode) => onChange({ defaultMode })}
+      />
       {showHealthCondition && (
-        <div className="flex flex-col gap-1.5">
-          <Label className="text-sm">
-            <Checkbox
-              checked={value.hasHealthCondition}
-              onCheckedChange={(checked) => onChange({ hasHealthCondition: checked })}
-            />
-            심혈관·호흡기 질환 있음
-          </Label>
-          <p className="pl-6 text-xs text-muted-foreground">
-            체크하면 미세먼지·폭염·한파 기준을 더 보수적으로 적용해요.
-          </p>
-        </div>
+        <HealthConditionField
+          checked={value.hasHealthCondition}
+          onChange={(hasHealthCondition) => onChange({ hasHealthCondition })}
+        />
       )}
     </div>
   );

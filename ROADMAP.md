@@ -11,6 +11,7 @@
 - Next.js 16은 기존 지식과 다를 수 있으므로, 해당 작업 전에 `node_modules/next/dist/docs/`의 관련 가이드를 먼저 읽습니다(`AGENTS.md`).
 - 색상·간격은 `DESIGN.md` 토큰만 씁니다. 복장 구간·안전 기준 수치는 `lib/` 아래 상수 파일에만 두고 컴포넌트에 직접 쓰지 않습니다.
 - PRD의 "(초안)"·"(확인 필요)" 수치는 4단계에서 검증합니다.
+- 함수 길이: 로직이 있는 함수는 30줄 이하로 유지합니다. 마크업(JSX)이 대부분이라 30줄을 넘는 컴포넌트 6개는 쪼개도 읽기 쉬워지지 않아 예외로 둡니다(`OutfitCard`, `SearchSection`, `HourlyForecast`, `OnboardingScreen`, `SettingsScreen`, `ConditionChips`). 새 컴포넌트가 이 목록에 없이 30줄을 넘으면 분리를 먼저 검토합니다.
 
 ## 현재 상태
 - 있음: Next.js 앱 뼈대(`app/`), 디자인 시스템 페이지(`app/design-system`), `components/ui`, `lib/utils.ts`, Storybook(`stories/`), `theme.css`
