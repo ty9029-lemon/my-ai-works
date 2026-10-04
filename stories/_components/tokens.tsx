@@ -8,7 +8,7 @@ export const COLOR_TOKENS = [
   { name: "on-secondary", cssVar: "--ds-on-secondary", value: "oklch(0.21 0.006 285.885)" },
   { name: "muted", cssVar: "--ds-muted", value: "oklch(0.967 0.001 286.375)" },
   { name: "on-muted", cssVar: "--ds-on-muted", value: "oklch(0.552 0.016 285.938)" },
-  { name: "danger", cssVar: "--ds-danger", value: "oklch(0.577 0.245 27.325)" },
+  { name: "danger", cssVar: "--ds-danger", value: "oklch(0.505 0.213 27.518)" },
   { name: "danger-subtle", cssVar: "--ds-danger-subtle", value: "oklch(0.975 0.015 27)" },
   { name: "background", cssVar: "--ds-background", value: "oklch(1 0 0)" },
   { name: "on-background", cssVar: "--ds-on-background", value: "oklch(0.141 0.005 285.823)" },

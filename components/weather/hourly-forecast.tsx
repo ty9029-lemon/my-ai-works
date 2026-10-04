@@ -25,7 +25,12 @@ const METRICS: readonly Metric[] = [
 export function HourlyForecast({ points, className }: HourlyForecastProps) {
   return (
     <div className={className}>
-      <div className="overflow-x-auto rounded-4xl border border-border">
+      <div
+        role="region"
+        aria-label="시간별 예보 표(좌우로 스크롤)"
+        tabIndex={0}
+        className="overflow-x-auto rounded-4xl border border-border"
+      >
         <table className="w-full min-w-max border-collapse text-sm">
           <caption className="sr-only">시간별 예보</caption>
           <thead>

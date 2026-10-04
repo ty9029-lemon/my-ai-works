@@ -9,7 +9,7 @@ colors:
   on-secondary: "oklch(0.21 0.006 285.885)"
   muted: "oklch(0.967 0.001 286.375)"
   on-muted: "oklch(0.552 0.016 285.938)"
-  danger: "oklch(0.577 0.245 27.325)"
+  danger: "oklch(0.505 0.213 27.518)"
   danger-subtle: "oklch(0.975 0.015 27)"
   warning: "oklch(0.555 0.163 48.4)"
   warning-subtle: "oklch(0.987 0.022 95.277)"

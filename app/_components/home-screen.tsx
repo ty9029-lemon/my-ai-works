@@ -50,6 +50,7 @@ function HomeContent({ profile, savedLocation }: { profile: UserProfile; savedLo
   const fetchedAt = state.status === "fresh" || state.status === "stale" ? state.data.fetchedAt : null;
   return (
     <PageContainer>
+      <h1 className="sr-only">러닝·외출 복장 추천</h1>
       <div className="flex items-start justify-between gap-2">
         <LocationLabel regionName={location.regionName} fallbackNotice={fallbackNotice} />
         <Link href="/settings" aria-label="설정" className={buttonVariants({ variant: "ghost", size: "icon" })}>
