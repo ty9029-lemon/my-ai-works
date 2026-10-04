@@ -12,6 +12,7 @@ export interface OpenMeteoGeocodingItem {
   longitude: number;
   admin1?: string;
   country?: string;
+  country_code?: string;
 }
 
 /** 이름·행정구역·국가를 쉼표로 이어 표시용 이름을 만든다. */
@@ -28,6 +29,7 @@ export function mapGeocodingItems(
     latitude: item.latitude,
     longitude: item.longitude,
     source: "open-meteo",
+    countryCode: item.country_code,
   }));
 }
 

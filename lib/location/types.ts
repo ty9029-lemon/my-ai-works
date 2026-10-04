@@ -6,4 +6,6 @@ export interface LocationSearchResult {
   longitude: number;
   /** 결과를 준 서비스 */
   source: "kakao" | "open-meteo";
+  /** ISO 국가 코드(예: "KR", "JP"). 알 수 있는 경우에만 채운다. */
+  countryCode?: string;
 }
