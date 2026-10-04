@@ -48,7 +48,7 @@ export function LocationSection({ canSearch, onSearch }: LocationSectionProps) {
       )}
       {status === "success" && location && (
         <p role="status" className="text-sm">
-          현재 위치: <span className="font-medium">{location.regionName}</span>
+          기준 위치: <span className="font-medium">{location.regionName}</span>
         </p>
       )}
       {status === "failure" && failure && (
