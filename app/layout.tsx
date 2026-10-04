@@ -21,6 +21,8 @@ const PRETENDARD_STYLESHEET =
 const APP_TITLE = "러닝·외출 복장 추천";
 
 export const metadata: Metadata = {
+  // 정식 출시 전까지 검색 엔진에 노출하지 않는다. 출시할 때 이 줄을 지운다.
+  robots: { index: false, follow: false },
   title: { default: APP_TITLE, template: `%s | ${APP_TITLE}` },
   description: "현재 위치의 날씨에 내 체감과 운동 강도를 더해 러닝·외출 복장과 안전 경고를 알려 드려요.",
 };
