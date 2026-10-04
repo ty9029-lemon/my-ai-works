@@ -9,6 +9,7 @@ const BADGE_VARIANTS = [
   "outline",
   "ghost",
   "destructive",
+  "warning",
   "link",
 ] as const;
 

@@ -11,6 +11,8 @@ colors:
   on-muted: "oklch(0.552 0.016 285.938)"
   danger: "oklch(0.577 0.245 27.325)"
   danger-subtle: "oklch(0.975 0.015 27)"
+  warning: "oklch(0.555 0.163 48.4)"
+  warning-subtle: "oklch(0.987 0.022 95.277)"
   background: "oklch(1 0 0)"
   on-background: "oklch(0.141 0.005 285.823)"
   surface: "oklch(1 0 0)"
@@ -186,6 +188,7 @@ components:
 - **secondary / on-secondary:** 보조 행동용의 옅은 회색 면. primary와 시각적 경쟁을 하지 않는다.
 - **muted / on-muted:** 비활성·부가 설명 영역. `on-muted`는 설명 텍스트, 플레이스홀더에 쓴다.
 - **danger:** 삭제·초기화 같은 파괴적 동작과 오류 상태 전용. 이 프로젝트의 destructive 스타일은 채워진 붉은 버튼이 아니라 **옅은 배경(`danger-subtle`, 실제 CSS는 danger 10% 투명도) + 붉은 글자** 방식이라 `on-danger` 토큰이 따로 없다. 다크 모드에서는 더 밝은 `oklch(0.704 0.191 22.216)`을 쓴다.
+- **warning:** 주의가 필요한 상태 전용(안전 등급 "주의", 경고 배지). 짙은 주황 계열이며 danger와 같은 방식으로 **옅은 배경(`warning-subtle`) + 주황 글자·아이콘**을 쓴다. 그래서 `on-warning` 토큰이 따로 없다. 다크 모드에서는 밝은 노랑 계열(`oklch(0.879 0.169 91.605)`)에 12% 투명도 배경을 쓴다. 글자·배경 대비는 라이트 4.88:1, 다크 5.21:1(WCAG AA 4.5:1 이상)로 확인했다. 색만으로 상태를 구분하지 말고 아이콘과 텍스트를 함께 쓴다.
 - **background / surface:** 페이지 바탕과 카드·팝오버 면. 다크에서는 각각 `oklch(0.141 0.005 285.823)`, `oklch(0.21 0.006 285.885)`로 단계를 나눠 깊이를 표현한다.
 - **border / input / focus-ring:** 경계선, 입력창 바탕, 포커스 링. 다크에서는 흰색 투명도(10%/15%)로 처리한다.
 - **chart-1 ~ chart-5:** 차트 전용 회색 단계. 데이터 계열을 구분할 때 이 순서대로 쓰고, 차트 외 UI에는 쓰지 않는다.
@@ -235,7 +238,7 @@ components:
     | `icon` / `icon-xs` / `icon-sm` / `icon-lg` | 36 / 24 / 32 / 40px | 정사각형 | - | - |
 
   - 모든 size의 패딩은 `spacing` 토큰(`sm`/`md`/`lg`/`xl`)을 쓴다. 이 값은 `components/ui/button.tsx`의 `buttonVariants.size`와 같다. size를 바꿀 때는 두 곳을 함께 수정한다.
-- **Badge:** 상태 표시용. primary(기본), secondary, destructive, outline.
+- **Badge:** 상태 표시용. primary(기본), secondary, destructive, warning, outline.
 - **Input + Label:** 항상 `Label htmlFor`와 `Input id`를 짝지어 쓴다. 오류는 `aria-invalid`로 표시하면 danger 테두리/링이 자동 적용된다.
 - **Card:** `size="sm" | "default"`. 정보 덩어리 단위이며 그림자 없이 1px `border` 테두리로 구분한다. `CardAction`에 배지나 보조 버튼을 둔다.
 - **Dialog:** 트리거와 닫기 버튼은 `asChild`가 아니라 `render` prop을 쓴다. 예: `<DialogTrigger render={<Button variant="outline" />}>`.
@@ -245,6 +248,7 @@ components:
 
 - Do: primary 버튼은 화면당 CTA **하나에만** 쓴다(다이얼로그 포함). 나머지 버튼은 secondary로 둔다.
 - Don't: `#hex`, `zinc-*` 같은 색을 하드코딩하거나 `globals.css` 밖에서 새 토큰을 정의하지 않는다. 항상 `bg-primary`, `text-muted-foreground` 같은 역할 토큰을 쓴다.
+- Do: warning은 "주의" 등급처럼 위험 직전의 경고 상태에만 쓴다. 중단·삭제·오류 같은 위험 상태에는 danger를 쓴다.
 - Do: danger는 삭제·초기화·오류 같은 파괴적/위험 상황에만 쓴다. 대비는 WCAG AA(본문 4.5:1) 이상을 유지하고, 아이콘만 있는 버튼에는 `aria-label`을 단다.
 - Do: 카드는 그림자 대신 1px `border` 테두리로 구분한다.
 - Don't: 섹션 사이 간격을 `spacing.xl`(24px) 아래로 줄이지 않는다.

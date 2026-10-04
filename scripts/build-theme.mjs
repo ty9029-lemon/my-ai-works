@@ -16,6 +16,8 @@ const DARK_COLORS = {
   "on-muted": "oklch(0.705 0.015 286.067)",
   danger: "oklch(0.704 0.191 22.216)",
   "danger-subtle": "oklch(0.704 0.191 22.216 / 20%)",
+  warning: "oklch(0.879 0.169 91.605)",
+  "warning-subtle": "oklch(0.879 0.169 91.605 / 12%)",
   background: "oklch(0.141 0.005 285.823)",
   "on-background": "oklch(0.985 0 0)",
   surface: "oklch(0.21 0.006 285.885)",

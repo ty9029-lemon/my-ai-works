@@ -16,6 +16,8 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = { args: { variant: "default" } };
 export const Secondary: Story = { args: { variant: "secondary" } };
 export const Destructive: Story = { args: { variant: "destructive" } };
+/** 주의 등급 등 위험 직전의 경고 상태 */
+export const Warning: Story = { args: { variant: "warning" } };
 export const Outline: Story = { args: { variant: "outline" } };
 export const Ghost: Story = { args: { variant: "ghost" } };
 export const Link: Story = { args: { variant: "link" } };

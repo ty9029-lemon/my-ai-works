@@ -11,6 +11,8 @@
   --ds-on-muted: oklch(0.552 0.016 285.938);
   --ds-danger: oklch(0.577 0.245 27.325);
   --ds-danger-subtle: oklch(0.975 0.015 27);
+  --ds-warning: oklch(0.555 0.163 48.4);
+  --ds-warning-subtle: oklch(0.987 0.022 95.277);
   --ds-background: oklch(1 0 0);
   --ds-on-background: oklch(0.141 0.005 285.823);
   --ds-surface: oklch(1 0 0);
@@ -34,6 +36,8 @@
   --ds-on-muted: oklch(0.705 0.015 286.067);
   --ds-danger: oklch(0.704 0.191 22.216);
   --ds-danger-subtle: oklch(0.704 0.191 22.216 / 20%);
+  --ds-warning: oklch(0.879 0.169 91.605);
+  --ds-warning-subtle: oklch(0.879 0.169 91.605 / 12%);
   --ds-background: oklch(0.141 0.005 285.823);
   --ds-on-background: oklch(0.985 0 0);
   --ds-surface: oklch(0.21 0.006 285.885);
@@ -57,6 +61,8 @@
   --color-on-muted: var(--ds-on-muted);
   --color-danger: var(--ds-danger);
   --color-danger-subtle: var(--ds-danger-subtle);
+  --color-warning: var(--ds-warning);
+  --color-warning-subtle: var(--ds-warning-subtle);
   --color-background: var(--ds-background);
   --color-on-background: var(--ds-on-background);
   --color-surface: var(--ds-surface);
