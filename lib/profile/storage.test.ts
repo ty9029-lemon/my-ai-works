@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  clearAllAppData,
   clearLocation,
   clearProfile,
   LOCATION_STORAGE_KEY,
@@ -107,5 +108,34 @@ describe("위치 저장", () => {
       const storage = makeStorage({ [LOCATION_STORAGE_KEY]: JSON.stringify(bad) });
       expect(loadLocation(storage)).toBeNull();
     }
+  });
+});
+
+describe("전체 초기화", () => {
+  /** key/length를 지원하는 가짜 저장소 */
+  function makeClearable(initial: Record<string, string>) {
+    const base = makeStorage(initial);
+    return Object.assign(base, {
+      get length() {
+        return Object.keys(base.data).length;
+      },
+      key: (index: number) => Object.keys(base.data)[index] ?? null,
+    });
+  }
+
+  it("프로필·위치·날씨 캐시를 지우고 다른 키는 남긴다", () => {
+    const storage = makeClearable({
+      [PROFILE_STORAGE_KEY]: "{}",
+      [LOCATION_STORAGE_KEY]: "{}",
+      "weather:last:37.57:126.98": "{}",
+      "weather:last:35.18:129.08": "{}",
+      "other-app:setting": "keep",
+    });
+    clearAllAppData(storage);
+    expect(Object.keys(storage.data)).toEqual(["other-app:setting"]);
+  });
+
+  it("저장된 것이 없어도 예외 없이 끝난다", () => {
+    expect(() => clearAllAppData(makeClearable({}))).not.toThrow();
   });
 });

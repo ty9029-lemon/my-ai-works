@@ -6,7 +6,8 @@ import type {
   WeatherQuery,
 } from "@/lib/weather/types";
 
-const CACHE_KEY_PREFIX = "weather:last";
+/** 마지막 날씨 데이터를 저장하는 키의 접두사. 데이터 초기화 때 이 접두사로 찾아 지운다. */
+export const WEATHER_CACHE_KEY_PREFIX = "weather:last";
 
 /** 마지막 날씨 데이터를 보관하는 저장소 (localStorage 호환) */
 export type WeatherStorage = Pick<Storage, "getItem" | "setItem">;
@@ -21,7 +22,7 @@ export type WeatherResult =
 function cacheKey({ latitude, longitude }: WeatherQuery): string {
   const lat = latitude.toFixed(COORDINATE_DECIMAL_PLACES);
   const lon = longitude.toFixed(COORDINATE_DECIMAL_PLACES);
-  return `${CACHE_KEY_PREFIX}:${lat}:${lon}`;
+  return `${WEATHER_CACHE_KEY_PREFIX}:${lat}:${lon}`;
 }
 
 /** 저장된 값이 날씨 데이터 형태인지 확인한다. */

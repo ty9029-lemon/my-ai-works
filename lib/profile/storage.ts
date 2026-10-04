@@ -1,5 +1,6 @@
 import { roundCoordinate } from "@/lib/location/round-coordinate";
 import { logger } from "@/lib/logger";
+import { WEATHER_CACHE_KEY_PREFIX } from "@/lib/weather/fetch-with-fallback";
 import {
   INTENSITIES,
   LOCATION_SOURCES,
@@ -142,4 +143,26 @@ export function saveLocation(
 /** 기준 위치를 지운다. */
 export function clearLocation(storage: KeyValueStorage): void {
   storage.removeItem(LOCATION_STORAGE_KEY);
+}
+
+/** 저장된 키 목록을 훑을 수 있는 localStorage 호환 저장소 */
+export type ClearableStorage = KeyValueStorage & Pick<Storage, "key" | "length">;
+
+/** 저장소의 모든 키를 모은다. 지우는 도중 순서가 바뀌므로 먼저 복사해 둔다. */
+function listKeys(storage: ClearableStorage): string[] {
+  return Array.from({ length: storage.length }, (_, i) => storage.key(i)).filter(
+    (key): key is string => key !== null,
+  );
+}
+
+/**
+ * 앱이 저장한 데이터를 모두 지운다: 프로필, 기준 위치, 날씨 캐시.
+ * 다음 진입 때 온보딩이 다시 나온다. 다른 앱의 키는 건드리지 않는다.
+ */
+export function clearAllAppData(storage: ClearableStorage): void {
+  clearProfile(storage);
+  clearLocation(storage);
+  listKeys(storage)
+    .filter((key) => key.startsWith(WEATHER_CACHE_KEY_PREFIX))
+    .forEach((key) => storage.removeItem(key));
 }
