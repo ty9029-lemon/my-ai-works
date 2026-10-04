@@ -37,11 +37,12 @@ function toResult(
   label: string,
   x: string,
   y: string,
+  kind: NonNullable<LocationSearchResult["kind"]>,
 ): LocationSearchResult | null {
   const longitude = Number(x);
   const latitude = Number(y);
   if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) return null;
-  return { label, latitude, longitude, source: "kakao" };
+  return { label, latitude, longitude, source: "kakao", kind };
 }
 
 /** 주소 검색 응답을 검색 결과로 변환한다. */
@@ -49,7 +50,7 @@ export function mapAddressDocuments(
   documents: KakaoAddressDocument[],
 ): LocationSearchResult[] {
   return documents
-    .map((doc) => toResult(doc.address_name, doc.x, doc.y))
+    .map((doc) => toResult(doc.address_name, doc.x, doc.y, "address"))
     .filter((result) => result !== null);
 }
 
@@ -59,7 +60,7 @@ export function mapKeywordDocuments(
 ): LocationSearchResult[] {
   return documents
     .map((doc) =>
-      toResult(`${doc.place_name} · ${doc.address_name}`, doc.x, doc.y),
+      toResult(`${doc.place_name} · ${doc.address_name}`, doc.x, doc.y, "place"),
     )
     .filter((result) => result !== null);
 }

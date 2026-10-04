@@ -42,13 +42,18 @@ describe("Kakao 응답 변환", () => {
     expect(
       mapAddressDocuments([{ address_name: "서울 중구", x: "126.97", y: "37.56" }]),
     ).toEqual([
-      { label: "서울 중구", latitude: 37.56, longitude: 126.97, source: "kakao" },
+      { label: "서울 중구", latitude: 37.56, longitude: 126.97, source: "kakao", kind: "address" },
     ]);
     expect(
       mapKeywordDocuments([
         { place_name: "서울시청", address_name: "서울 중구", x: "126.97", y: "37.56" },
       ])[0].label,
     ).toBe("서울시청 · 서울 중구");
+    expect(
+      mapKeywordDocuments([
+        { place_name: "서울시청", address_name: "서울 중구", x: "126.97", y: "37.56" },
+      ])[0].kind,
+    ).toBe("place");
   });
 
   it("좌표가 숫자가 아닌 문서는 버린다", () => {
@@ -126,7 +131,11 @@ describe("Open-Meteo Geocoding", () => {
 describe("searchLocations", () => {
   const tokyo = { name: "도쿄", latitude: 35.68, longitude: 139.69, country_code: "JP", country: "일본" };
   const seoulKr = { name: "서울", latitude: 37.57, longitude: 126.98, country_code: "KR", country: "대한민국" };
+  const KAKAO_PLACE = { ...KAKAO_RESULT, label: "도쿄커틀릿 · 서울 성북구", kind: "place" } as const;
+  const KAKAO_ADDRESS = { ...KAKAO_RESULT, label: "대구광역시", kind: "address" } as const;
   const kakaoOk: KakaoClient = { searchAddress: async () => [KAKAO_RESULT], reverseGeocode: async () => null };
+  const kakaoPlaces: KakaoClient = { searchAddress: async () => [KAKAO_PLACE], reverseGeocode: async () => null };
+  const kakaoAddresses: KakaoClient = { searchAddress: async () => [KAKAO_ADDRESS], reverseGeocode: async () => null };
   const kakaoEmpty: KakaoClient = { searchAddress: async () => [], reverseGeocode: async () => null };
   const kakaoBroken: KakaoClient = {
     searchAddress: async () => {
@@ -136,16 +145,36 @@ describe("searchLocations", () => {
   };
   const failingFetch = vi.fn(async () => new Response("{}", { status: 500 }));
 
-  it("Kakao 결과 뒤에 한국 밖 지명 결과를 덧붙인다", async () => {
+  it("Kakao가 상호만 찾았으면 한국 밖 지명 결과를 Kakao 결과보다 앞에 둔다", async () => {
+    const fetchFn = jsonFetch({ results: [tokyo] });
+    const results = await searchLocations("도쿄", kakaoPlaces, fetchFn as typeof fetch);
+    expect(results.map((r) => r.source)).toEqual(["open-meteo", "kakao"]);
+    expect(results[0]).toMatchObject({ label: "도쿄, 일본", countryCode: "JP" });
+  });
+
+  it("해외 결과가 여러 개여도 모두 상호 결과보다 앞에 오고 Open-Meteo가 준 순서를 유지한다", async () => {
+    const fetchFn = jsonFetch({ results: [{ ...tokyo, name: "A" }, { ...tokyo, name: "B" }] });
+    const results = await searchLocations("도쿄", kakaoPlaces, fetchFn as typeof fetch);
+    expect(results.map((r) => r.label)).toEqual(["A, 일본", "B, 일본", KAKAO_PLACE.label]);
+  });
+
+  it("Kakao가 주소·행정구역을 찾았으면 Kakao 결과가 먼저이고 해외 결과는 뒤에 붙는다", async () => {
+    const kpDaegu = { name: "대구", latitude: 38.9, longitude: 127.6, country_code: "KP", country: "북한" };
+    const fetchFn = jsonFetch({ results: [kpDaegu] });
+    const results = await searchLocations("대구", kakaoAddresses, fetchFn as typeof fetch);
+    expect(results.map((r) => r.source)).toEqual(["kakao", "open-meteo"]);
+    expect(results[0].label).toBe("대구광역시");
+  });
+
+  it("Kakao 결과의 종류를 모르면 Kakao 결과를 먼저 둔다(보수적)", async () => {
     const fetchFn = jsonFetch({ results: [tokyo] });
     const results = await searchLocations("도쿄", kakaoOk, fetchFn as typeof fetch);
     expect(results.map((r) => r.source)).toEqual(["kakao", "open-meteo"]);
-    expect(results[1]).toMatchObject({ label: "도쿄, 일본", countryCode: "JP" });
   });
 
-  it("Open-Meteo의 한국 결과는 Kakao와 중복이라 제외한다", async () => {
+  it("Open-Meteo의 한국 결과는 Kakao와 중복이라 제외한다(해외가 없으면 Kakao만 남는다)", async () => {
     const fetchFn = jsonFetch({ results: [seoulKr, tokyo] });
-    const results = await searchLocations("서울", kakaoOk, fetchFn as typeof fetch);
+    const results = await searchLocations("서울", kakaoPlaces, fetchFn as typeof fetch);
     expect(results.filter((r) => r.source === "open-meteo").map((r) => r.countryCode)).toEqual(["JP"]);
   });
 

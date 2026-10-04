@@ -9,8 +9,10 @@ const KOREA_COUNTRY_CODE = "KR";
 
 /**
  * 주소·지명을 검색한다. Kakao와 Open-Meteo Geocoding을 함께 조회한다.
- * - Kakao 결과가 있으면 그 뒤에 한국 밖 지명(최대 MAX_FOREIGN_RESULTS개)을 덧붙인다.
- *   Kakao는 "도쿄"에도 한국 상호를 돌려주므로, 해외 지명을 찾을 수 있게 하려는 것이다.
+ * - Kakao가 **상호·시설(place)** 만 찾았으면 한국 밖 지명(최대 MAX_FOREIGN_RESULTS개)을 그 앞에 둔다.
+ *   Kakao는 "도쿄"에도 한국 상호를 돌려주는데, 해외 지명이 상호 목록에 묻히지 않게 하려는 것이다.
+ * - Kakao가 **주소·행정구역(address)** 을 찾았으면 그 결과를 먼저 두고 해외 지명은 뒤에 붙인다.
+ *   "대구"처럼 해외에 같은 이름이 있어도 진짜 한국 지명이 위에 오게 하려는 것이다.
  * - Kakao가 0건이거나 실패했거나 키가 없으면 Open-Meteo 결과 전체를 쓴다.
  * - Open-Meteo만 실패하면 Kakao 결과만 돌려주고, 쓸 수 있는 결과가 없으면 예외를 던진다.
  * @param kakao Kakao 클라이언트. 키가 없으면 null
@@ -37,5 +39,6 @@ export async function searchLocations(
   const foreign = openSettled.value
     .filter((result) => result.countryCode !== KOREA_COUNTRY_CODE)
     .slice(0, MAX_FOREIGN_RESULTS);
-  return [...kakaoResults, ...foreign];
+  const onlyPlaces = kakaoResults.every((result) => result.kind === "place");
+  return onlyPlaces ? [...foreign, ...kakaoResults] : [...kakaoResults, ...foreign];
 }

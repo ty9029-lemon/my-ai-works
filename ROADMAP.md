@@ -28,7 +28,7 @@
 - [x] **F002** 조회 실패 시 직전 데이터 + "N분 전 데이터", 직전 데이터도 없으면 "다시 시도" 상태 처리
 - [x] **F001** Geolocation 로직(`lib/location/geolocation.ts`, 훅 `useCurrentPosition`): 버튼 클릭 시에만 요청, 에러 코드 1·2·3별 문구, Permissions API 미사용
 - [x] **F001** 위치 대체 순서(마지막 저장 위치 → 주소 검색 → 서울시청), 반올림 좌표 저장, 구·동 단위 표시 규칙
-- [x] **F001** 주소 검색: Kakao 로컬 → 0건·한국 밖은 Open-Meteo Geocoding (`/api/geocode`, `/api/reverse-geocode`). **Kakao 키 경로는 실제 키로 검증 완료(2026-10-04: 서울시청·합정동 주민센터·마포구 검색, 좌표→"서울특별시 마포구 합정동").** 카카오맵 사용 설정이 꺼져 있으면 403이므로 앱 설정에서 켜야 함. 키 없이는 한국어 지명 검색 품질이 낮음("서울"·"마포구" 0건). 한국 밖 지명은 Kakao 결과 뒤에 Open-Meteo 결과(한국 제외, 최대 3개)를 덧붙임. Kakao 결과는 캐시·저장하지 않으며 약관 확인은 남음(PRD 미결 질문)
+- [x] **F001** 주소 검색: Kakao 로컬 → 0건·한국 밖은 Open-Meteo Geocoding (`/api/geocode`, `/api/reverse-geocode`). **Kakao 키 경로는 실제 키로 검증 완료(2026-10-04: 서울시청·합정동 주민센터·마포구 검색, 좌표→"서울특별시 마포구 합정동").** 카카오맵 사용 설정이 꺼져 있으면 403이므로 앱 설정에서 켜야 함. 키 없이는 한국어 지명 검색 품질이 낮음("서울"·"마포구" 0건). 한국 밖 지명(Open-Meteo, 한국 제외, 최대 3개)은 Kakao가 상호·시설만 찾았을 때(도쿄·파리 등) 맨 앞에, 주소·행정구역을 찾았을 때(대구·광주 등)는 Kakao 결과 뒤에 둠. Kakao 결과는 캐시·저장하지 않으며 약관 확인은 남음(PRD 미결 질문)
 - [x] **F003** `localStorage` 기반 프로필·위치 저장(`lib/profile/storage.ts`)과 훅(`useProfile`, `useSavedLocation`, `useCurrentPosition`), 초기화 기능. 저장 로직은 단위 테스트, **훅은 lint·build만 통과하고 브라우저 동작은 3단계 화면에서 확인**
 
 ## 2단계: 규칙 (F004, F005)
